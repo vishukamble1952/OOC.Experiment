@@ -1,0 +1,74 @@
+//Mini Projrct on simple billing system
+#include <iostream>
+using namespace std;
+
+// Base class
+class Product {
+protected:
+    string name;
+    double price;
+
+public:
+    Product(string n, double p) {
+        name = n;
+        price = p;
+        cout << "Product created: " << name << endl;
+    }
+
+    virtual double getPrice() {
+        return price;
+    }
+
+    ~Product() {
+        cout << "Product removed: " << name << endl;
+    }
+};
+
+// Derived class
+class DiscountProduct : public Product {
+    double discountPercent;
+public:
+    DiscountProduct(string n, double p, double d)
+        : Product(n, p), discountPercent(d) {}
+
+    double getPrice() override {
+        return price - (price * discountPercent / 100);
+    }
+};
+
+// Function Overloading
+double calculateBill(double price) {
+    return price;
+}
+
+int main() {
+    string productName;
+    double price = 0;
+    double discount = 10;   // fixed 10% discount
+
+    cout << "Enter product name: ";
+    cin >> productName;
+
+    // Product price database (you can add more)
+    if (productName == "USB") price = 200;
+    else if (productName == "Mouse") price = 450;
+    else if (productName == "Keyboard") price = 800;
+    else if (productName == "Charger") price = 350;
+    else {
+        cout << "Product not found!" << endl;
+        return 0;
+    }
+
+    // Create objects
+    Product p(productName, price);
+    DiscountProduct dp(productName, price, discount);
+
+    // Display output
+    cout << "\n--- Bill Details ---\n";
+    cout << productName << " Original Price: Rs." << calculateBill(p.getPrice()) << endl;
+    cout << productName << " Discounted Price (" << discount << "% off): Rs."<< calculateBill(dp.getPrice()) << endl;
+
+    cout << "\nThank you for shopping!" << endl;
+
+    return 0;
+}
